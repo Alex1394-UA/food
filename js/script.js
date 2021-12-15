@@ -335,41 +335,88 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-    const rightS = document.querySelector('.offer__slider-next'),
-          rC = document.querySelector('#current'),
-          offerPic = document.querySelector('.offer__slide'),
-          offerSlides = [
-              'img/slider/pepper.jpg',
-              'img/slider/food-12.jpg',
-              'img/slider/olive-oil.jpg',
-              'img/slider/paprika.jpg'
-          ];
-    
-    let current = 1;
-    rC.innerHTML = `0${current}`;
-    const rr = offerPic.firstElementChild;
+    // SLIDER
 
-    const changeImg = function() {
-        rr.innerHTML = `
-        <img src= ${offerSlides[current - 1]} alt="pepper">
-    `;
-    };
-    changeImg();
+    const slides = document.querySelectorAll('.offer__slide'),
+          prev = document.querySelector('.offer__slider-prev'),
+          next = document.querySelector('.offer__slider-next'),
+          total = document.querySelector('#total'),
+          current= document.querySelector('#current');
+    let slideIndex =1;
 
-    rightS.addEventListener('click', () => {
-        incCurrent();
-    });
-    
-    function incCurrent() {
-        current++;
-        if (current > 4) {
-        current = 1;
-        }
-        if (current < 10) {
-            rC.innerHTML = `0${current}`;
-        } else {
-            rC.innerHTML = current;
-        }
-        changeImg();
+    showSlides(slideIndex);
+
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+    } else {
+        total.textContent = slides.length;
     }
+
+    function showSlides(n) {
+        if (n > slides.length) {
+            slideIndex =1;
+        }
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach(item => item.style.display = 'none');
+        slides[slideIndex - 1].style.display = 'block';
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+    }
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    prev.addEventListener('click', () => {
+        plusSlides(-1);
+    });
+
+    next.addEventListener('click', () => {
+        plusSlides(1);
+    });
 });
+
+/* const rightS = document.querySelector('.offer__slider-next'),
+rC = document.querySelector('#current'),
+offerPic = document.querySelector('.offer__slide'),
+offerSlides = [
+    'img/slider/pepper.jpg',
+    'img/slider/food-12.jpg',
+    'img/slider/olive-oil.jpg',
+    'img/slider/paprika.jpg'
+];
+
+let current = 1;
+rC.innerHTML = `0${current}`;
+const rr = offerPic.firstElementChild;
+
+const changeImg = function() {
+rr.innerHTML = `
+<img src= ${offerSlides[current - 1]} alt="pepper">
+`;
+};
+changeImg();
+
+rightS.addEventListener('click', () => {
+incCurrent();
+});
+
+function incCurrent() {
+current++;
+if (current > 4) {
+current = 1;
+}
+if (current < 10) {
+  rC.innerHTML = `0${current}`;
+} else {
+  rC.innerHTML = current;
+}
+changeImg();
+} */
